@@ -1,30 +1,30 @@
 import { create } from "zustand";
 import { JOBS } from "../../../data/jobs";
+import { canChangeJob } from "../utils/canChangeJob";
 
 const defaultJob = "adventure";
 
 export const useCharacterStore = create((set) => ({
+    level: 1,
+
     job: defaultJob,
 
-    // 캐릭터 기본 능력치
+    // 캐릭터 총합 능력치
     stats: { ...JOBS[defaultJob].baseStats },
 
+    // 모험가 기본 능력치
     baseStats: { ...JOBS[defaultJob].baseStats },
 
+    levelUp: () => {
+        set((state) => ({
+            level: state.level + 1,
+            remainingPoints: state.remainingPoints + 5,
+        }))
+    },
+
     changeJob: (jobKey) => set((state) => {
-        const requirement = JOBS[jobKey].requirement;
-
-        if (!requirement) return state;
-
-        const canChange = Object.entries(requirement).every(
-            ([stat, value]) => state.stats[stat] >= value
-        );
-
-        if (!canChange) return state;
-
-        return {
-            job: jobKey,
-        }
+        const state = get();
+        return canChangeJob(jobKey, state.stats, state.level);
     }),
 
     // 남은 캐릭터 스탯

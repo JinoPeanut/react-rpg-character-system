@@ -1,3 +1,5 @@
+import JobPanel from "./features/characters/components/JobPanel";
+import LevelPanel from "./features/characters/components/LevelPanel";
 import StatPanel from "./features/characters/components/StatPanel";
 function App() {
 
@@ -5,7 +7,9 @@ function App() {
   return (
     <div>
       <h1>Character build</h1>
+      <LevelPanel />
       <StatPanel />
+      <JobPanel />
     </div>
   )
 }

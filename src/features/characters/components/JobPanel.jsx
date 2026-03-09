@@ -18,7 +18,7 @@ function JobPanel() {
 
                 return (
                     <div key={jobKey}>
-                        {job.name}
+                        {job.name} (Lv. {job.requireLevel})
 
                         <button
                             onClick={() => changeJob(jobKey)}

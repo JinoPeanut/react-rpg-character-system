@@ -8,6 +8,14 @@ export const JOBS = {
             Int: 8,
             Luk: 8,
         },
+        baseHp: 10,
+        hpPerLevel: 10,
+
+        hpFormula: (level, job, stats) => job.baseHp + ((level - 1) * job.hpPerLevel),
+        attackFormula: (stats) =>
+            (stats.Str * 0.1) + (stats.Dex * 0.1) + (stats.Luk * 0.1),
+        magicFormula: (stats) =>
+            (stats.Int * 0.2) + (stats.Luk * 0.1),
     },
 
     warrior: {
@@ -16,6 +24,16 @@ export const JOBS = {
             Str: 20,
         },
         requireLevel: 10,
+        baseHp: 100,
+        hpPerLevel: 20,
+
+        hpFormula: (level, job, stats) =>
+            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Str * 2),
+
+        attackFormula: (stats) =>
+            (stats.Str * 0.25) + (stats.Dex * 0.1),
+
+        magicFormula: () => 0,
     },
 
     archer: {
@@ -24,6 +42,9 @@ export const JOBS = {
             Dex: 20,
         },
         requireLevel: 10,
+        attackFormula: (stats) =>
+            (stats.Str * 0.1) + (stats.Dex * 0.25),
+        magicFormula: () => 0,
     },
 
     mage: {
@@ -32,13 +53,19 @@ export const JOBS = {
             Int: 20,
         },
         requireLevel: 10,
+        attackFormula: () => 0,
+        magicFormula: (stats) =>
+            (stats.Int * 0.25) + (stats.Luk * 0.1),
     },
 
-    theif: {
+    thief: {
         name: "도적",
         requirement: {
             Luk: 20,
         },
         requireLevel: 10,
+        attackFormula: (stats) =>
+            (stats.Dex * 0.1) + (stats.Luk * 0.25),
+        magicFormula: () => 0,
     },
 };

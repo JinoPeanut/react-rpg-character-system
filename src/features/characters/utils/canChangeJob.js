@@ -6,8 +6,8 @@ export function canChangeJob(jobKey, stats, level) {
 
     if (level < job.requireLevel) return false;
 
-    for (const stat in jobKey.requirement) {
-        if (stats[stat] < jobKey.requirement[stat]) {
+    for (const stat in job.requirement) {
+        if (stats[stat] < job.requirement[stat]) {
             return false;
         }
     }

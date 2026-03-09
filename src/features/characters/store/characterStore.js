@@ -3,6 +3,7 @@ import { JOBS } from "../../../data/jobs";
 import { canChangeJob } from "../utils/canChangeJob";
 
 const defaultJob = "adventure";
+const POINT_PER_LEVEL = 5;
 
 export const useCharacterStore = create((set) => ({
     level: 1,
@@ -18,17 +19,30 @@ export const useCharacterStore = create((set) => ({
     levelUp: () => {
         set((state) => ({
             level: state.level + 1,
-            remainingPoints: state.remainingPoints + 5,
+            remainingPoints: state.remainingPoints + POINT_PER_LEVEL,
+        }))
+    },
+
+    statReset: () => {
+        set((state) => ({
+            job: defaultJob,
+            stats: { ...state.baseStats },
+            remainingPoints: (state.level - 1) * POINT_PER_LEVEL,
         }))
     },
 
     changeJob: (jobKey) => set((state) => {
-        const state = get();
-        return canChangeJob(jobKey, state.stats, state.level);
+        if (!canChangeJob(jobKey, state.stats, state.level)) {
+            return state;
+        }
+
+        return {
+            job: jobKey,
+        }
     }),
 
     // 남은 캐릭터 스탯
-    remainingPoints: 20,
+    remainingPoints: 0,
 
     // 캐릭터가 가진 스킬들
     skills: [],

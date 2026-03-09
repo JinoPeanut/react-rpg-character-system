@@ -6,6 +6,7 @@ function StatPanel() {
     const decreaseStat = useCharacterStore((state) => state.decreaseStat);
     const remainingPoints = useCharacterStore((state) => state.remainingPoints);
     const baseStats = useCharacterStore((state) => state.baseStats);
+    const statReset = useCharacterStore((state) => state.statReset);
 
     return (
         <div>
@@ -30,6 +31,12 @@ function StatPanel() {
                     </button>
                 </div>
             ))}
+
+            <div>
+                <button onClick={statReset}>
+                    전체 초기화
+                </button>
+            </div>
         </div>
     )
 }

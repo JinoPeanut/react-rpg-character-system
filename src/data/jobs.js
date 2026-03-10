@@ -1,3 +1,6 @@
+/* 기본 크리티컬 데미지 2배 */
+export const BASE_CRIT_DAMAGE = 2;
+
 export const JOBS = {
 
     adventure: {
@@ -10,12 +13,20 @@ export const JOBS = {
         },
         baseHp: 10,
         hpPerLevel: 10,
+        baseCritChance: 0.1,
 
         hpFormula: (level, job, stats) => job.baseHp + ((level - 1) * job.hpPerLevel),
+
         attackFormula: (stats) =>
             (stats.Str * 0.1) + (stats.Dex * 0.1) + (stats.Luk * 0.1),
+
         magicFormula: (stats) =>
             (stats.Int * 0.2) + (stats.Luk * 0.1),
+
+        defenseFormula: (stats) =>
+            (stats.Str * 0.05) + (stats.Dex * 0.05) + (stats.Int * 0.05) + (stats.Luk * 0.05),
+
+
     },
 
     warrior: {
@@ -26,6 +37,7 @@ export const JOBS = {
         requireLevel: 10,
         baseHp: 100,
         hpPerLevel: 20,
+        baseCritChance: 0.2,
 
         hpFormula: (level, job, stats) =>
             job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Str * 2),
@@ -34,6 +46,9 @@ export const JOBS = {
             (stats.Str * 0.25) + (stats.Dex * 0.1),
 
         magicFormula: () => 0,
+
+        defenseFormula: (stats) =>
+            (stats.Str * 0.25) + (stats.Dex * 0.05),
     },
 
     archer: {
@@ -42,9 +57,20 @@ export const JOBS = {
             Dex: 20,
         },
         requireLevel: 10,
+        baseHp: 100,
+        hpPerLevel: 15,
+        baseCritChance: 0.35,
+
+        hpFormula: (level, job, stats) =>
+            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Dex * 1.7),
+
         attackFormula: (stats) =>
-            (stats.Str * 0.1) + (stats.Dex * 0.25),
+            (stats.Dex * 0.2) + (stats.Str * 0.1),
+
         magicFormula: () => 0,
+
+        defenseFormula: (stats) =>
+            (stats.Dex * 0.2) + (stats.Str * 0.05),
     },
 
     mage: {
@@ -53,9 +79,19 @@ export const JOBS = {
             Int: 20,
         },
         requireLevel: 10,
+        baseHp: 100,
+        hpPerLevel: 10,
+        baseCritChance: 0.2,
+
+        hpFormula: (level, job, stats) =>
+            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Int * 1),
         attackFormula: () => 0,
+
         magicFormula: (stats) =>
-            (stats.Int * 0.25) + (stats.Luk * 0.1),
+            (stats.Int * 0.3) + (stats.Luk * 0.1),
+
+        defenseFormula: (stats) =>
+            (stats.Int * 0.1) + (stats.Luk * 0.05),
     },
 
     thief: {
@@ -64,8 +100,19 @@ export const JOBS = {
             Luk: 20,
         },
         requireLevel: 10,
+        baseHp: 100,
+        hpPerLevel: 13,
+        baseCritChance: 0.3,
+
+        hpFormula: (level, job, stats) =>
+            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Luk * 1.5),
+
         attackFormula: (stats) =>
-            (stats.Dex * 0.1) + (stats.Luk * 0.25),
+            (stats.Luk * 0.2) + (stats.Dex * 0.1),
+
         magicFormula: () => 0,
+
+        defenseFormula: (stats) =>
+            (stats.Luk * 0.2) + (stats.Dex * 0.05),
     },
 };

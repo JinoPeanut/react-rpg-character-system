@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { EQUIPMENTS } from "../../../data/equipments";
 import { JOBS } from "../../../data/jobs";
 import { canChangeJob } from "../utils/canChangeJob";
 
@@ -48,9 +49,36 @@ export const useCharacterStore = create((set) => ({
     skills: [],
 
     // 기본 장착 장비
-    equipment: {
+    equippedItems: {
         weapon: null,
         armor: null,
+    },
+
+    //장비 장착 함수
+    equipItem: (slot, itemId) => {
+        const job = get().job;
+        const item = EQUIPMENTS[slot][itemId];
+
+        if (!item.allowedJobs.includes(job)) {
+            console.log("이 직업은 장착할 수 없습니다");
+            return;
+        }
+
+        set((state) => ({
+            equippedItems: {
+                ...state.equippedItems,
+                [slot]: itemId,
+            }
+        }))
+    },
+
+    unEquipItem: (slot) => {
+        set((state) => ({
+            equippedItems: {
+                ...state.equippedItems,
+                [slot]: null,
+            }
+        }))
     },
 
     increaseStat: (stat) => set((state) => {

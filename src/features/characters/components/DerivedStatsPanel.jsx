@@ -1,18 +1,19 @@
 import { useCharacterStore } from "../store/characterStore";
-import { JOBS } from "../../../data/jobs";
+import { calculateDerivedStats } from "../systems/calculateDerivedStats";
 
 function DerivedStatsPanel() {
     const level = useCharacterStore((state) => state.level);
     const job = useCharacterStore((state) => state.job);
     const stats = useCharacterStore((state) => state.stats);
 
-    const jobData = JOBS[job];
-
-    const attack = jobData.attackFormula(stats);
-    const magic = jobData.magicFormula(stats);
-    const hp = jobData.hpFormula(level, jobData, stats);
-    const crit = null;
-    const defense = jobData.defenseFormula(stats);
+    const {
+        attack,
+        magic,
+        hp,
+        defense,
+        critChance,
+        critDamage
+    } = calculateDerivedStats(level, job, stats);
 
     return (
         <div>
@@ -20,9 +21,10 @@ function DerivedStatsPanel() {
 
             <p>공격력: {attack.toFixed(2)}</p>
             <p>마력: {magic.toFixed(2)}</p>
-            <p>HP: {Math.floor(hp)}</p>
-            <p>크리티컬 확률: {crit}</p>
+            <p>HP: {hp.toFixed(0)}</p>
             <p>방어력: {defense.toFixed(2)}</p>
+            <p>크리티컬 확률: {(critChance * 100).toFixed(0)}%</p>
+            <p>크리티컬 대미지: {critDamage * 100}%</p>
         </div>
     )
 }

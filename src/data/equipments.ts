@@ -1,4 +1,17 @@
-export const EQUIPMENTS = {
+import type { JobType } from "./jobs.js";
+
+export type EquipmentSlot = "weapon" | "armor"
+
+type Equipment = {
+    name: string,
+    attack?: number,
+    magic?: number,
+    defense?: number,
+    hp?: number,
+    allowedJobs?: JobType[],
+}
+
+export const EQUIPMENTS: Record<EquipmentSlot, Record<string, Equipment>> = {
     weapon: {
         woodenSword: {
             name: "나무 검",

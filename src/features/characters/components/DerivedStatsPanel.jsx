@@ -5,6 +5,7 @@ function DerivedStatsPanel() {
     const level = useCharacterStore((state) => state.level);
     const job = useCharacterStore((state) => state.job);
     const stats = useCharacterStore((state) => state.stats);
+    const equippedItems = useCharacterStore((state) => state.equippedItems);
 
     const {
         attack,
@@ -13,7 +14,7 @@ function DerivedStatsPanel() {
         defense,
         critChance,
         critDamage
-    } = calculateDerivedStats(level, job, stats);
+    } = calculateDerivedStats(level, job, stats, equippedItems);
 
     return (
         <div>

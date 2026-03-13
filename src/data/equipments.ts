@@ -8,10 +8,13 @@ type Equipment = {
     magic?: number,
     defense?: number,
     hp?: number,
-    allowedJobs?: JobType[],
+    allowedJobs?: readonly JobType[],
 }
 
-export const EQUIPMENTS: Record<EquipmentSlot, Record<string, Equipment>> = {
+export const EQUIPMENTS: {
+    weapon: Record<string, Equipment>,
+    armor: Record<string, Equipment>
+} = {
     weapon: {
         woodenSword: {
             name: "나무 검",
@@ -51,4 +54,7 @@ export const EQUIPMENTS: Record<EquipmentSlot, Record<string, Equipment>> = {
             defense: 2,
         }
     }
-}
+} as const
+
+export type WeaponId = keyof typeof EQUIPMENTS.weapon;
+export type ArmorId = keyof typeof EQUIPMENTS.armor;

@@ -1,32 +1,42 @@
 import type { Stats } from "../types/stats.js";
 
+export type Job = {
+    name: string,
+    requireLevel?: number,
+    requirement?: Partial<Stats>,
+    baseHp: number,
+    hpPerLevel: number,
+    baseCritChance: number,
+    hpFormula: (level: number, job: Job, stats: Stats) => number,
+    attackFormula: (stat: Stats) => number,
+    magicFormula: (stat: Stats) => number,
+    defenseFormula: (stat: Stats) => number,
+}
+
 /* 기본 크리티컬 데미지 2배 */
 export const BASE_CRIT_DAMAGE = 2;
 
-export const JOBS = {
+export const JOBS: Record<string, Job> = {
 
     adventure: {
         name: "모험가",
-        baseStats: {
-            Str: 8,
-            Dex: 8,
-            Int: 8,
-            Luk: 8,
-        },
         baseHp: 10,
         hpPerLevel: 10,
         baseCritChance: 0.1,
 
-        hpFormula: (level: number, job: any, stats: Stats) => job.baseHp + ((level - 1) * job.hpPerLevel),
+        hpFormula: (level: number, job: Job, stats: Stats) => job.baseHp + ((level - 1) * job.hpPerLevel),
 
-        attackFormula: (stats: Stats) =>
-            (stats.Str * 0.1) + (stats.Dex * 0.1) + (stats.Luk * 0.1),
+        attackFormula: (stats: Stats) => {
+            return (stats.Str * 0.1) + (stats.Dex * 0.1) + (stats.Luk * 0.1)
+        },
 
-        magicFormula: (stats: Stats) =>
-            (stats.Int * 0.2) + (stats.Luk * 0.1),
+        magicFormula: (stats: Stats) => {
+            return (stats.Int * 0.2) + (stats.Luk * 0.1)
+        },
 
-        defenseFormula: (stats: Stats) =>
-            (stats.Str * 0.05) + (stats.Dex * 0.05) + (stats.Int * 0.05) + (stats.Luk * 0.05),
+        defenseFormula: (stats: Stats) => {
+            return (stats.Str * 0.05) + (stats.Dex * 0.05) + (stats.Int * 0.05) + (stats.Luk * 0.05)
+        },
 
 
     },
@@ -41,16 +51,19 @@ export const JOBS = {
         hpPerLevel: 20,
         baseCritChance: 0.2,
 
-        hpFormula: (level: number, job: any, stats: Stats) =>
-            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Str * 2),
+        hpFormula: (level: number, job: Job, stats: Stats) => {
+            return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Str * 2)
+        },
 
-        attackFormula: (stats: Stats) =>
-            (stats.Str * 0.25) + (stats.Dex * 0.1),
+        attackFormula: (stats: Stats) => {
+            return (stats.Str * 0.25) + (stats.Dex * 0.1)
+        },
 
-        magicFormula: () => 0,
+        magicFormula: () => { return 0 },
 
-        defenseFormula: (stats: Stats) =>
-            (stats.Str * 0.25) + (stats.Dex * 0.05),
+        defenseFormula: (stats: Stats) => {
+            return (stats.Str * 0.25) + (stats.Dex * 0.05)
+        },
     },
 
     archer: {
@@ -63,16 +76,19 @@ export const JOBS = {
         hpPerLevel: 15,
         baseCritChance: 0.35,
 
-        hpFormula: (level: number, job: any, stats: Stats) =>
-            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Dex * 1.7),
+        hpFormula: (level: number, job: Job, stats: Stats) => {
+            return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Dex * 1.7)
+        },
 
-        attackFormula: (stats: Stats) =>
-            (stats.Dex * 0.2) + (stats.Str * 0.1),
+        attackFormula: (stats: Stats) => {
+            return (stats.Dex * 0.2) + (stats.Str * 0.1)
+        },
 
-        magicFormula: () => 0,
+        magicFormula: () => { return 0 },
 
-        defenseFormula: (stats: Stats) =>
-            (stats.Dex * 0.2) + (stats.Str * 0.05),
+        defenseFormula: (stats: Stats) => {
+            return (stats.Dex * 0.2) + (stats.Str * 0.05)
+        },
     },
 
     mage: {
@@ -85,15 +101,18 @@ export const JOBS = {
         hpPerLevel: 10,
         baseCritChance: 0.2,
 
-        hpFormula: (level: number, job: any, stats: Stats) =>
-            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Int * 1),
-        attackFormula: () => 0,
+        hpFormula: (level: number, job: Job, stats: Stats) => {
+            return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Int * 1)
+        },
+        attackFormula: () => { return 0 },
 
-        magicFormula: (stats: Stats) =>
-            (stats.Int * 0.3) + (stats.Luk * 0.1),
+        magicFormula: (stats: Stats) => {
+            return (stats.Int * 0.3) + (stats.Luk * 0.1)
+        },
 
-        defenseFormula: (stats: Stats) =>
-            (stats.Int * 0.1) + (stats.Luk * 0.05),
+        defenseFormula: (stats: Stats) => {
+            return (stats.Int * 0.1) + (stats.Luk * 0.05)
+        },
     },
 
     thief: {
@@ -106,16 +125,19 @@ export const JOBS = {
         hpPerLevel: 13,
         baseCritChance: 0.3,
 
-        hpFormula: (level: number, job: any, stats: Stats) =>
-            job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Luk * 1.5),
+        hpFormula: (level: number, job: Job, stats: Stats) => {
+            return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Luk * 1.5)
+        },
 
-        attackFormula: (stats: Stats) =>
-            (stats.Luk * 0.2) + (stats.Dex * 0.1),
+        attackFormula: (stats: Stats) => {
+            return (stats.Luk * 0.2) + (stats.Dex * 0.1)
+        },
 
-        magicFormula: () => 0,
+        magicFormula: () => { return 0 },
 
-        defenseFormula: (stats: Stats) =>
-            (stats.Luk * 0.2) + (stats.Dex * 0.05),
+        defenseFormula: (stats: Stats) => {
+            return (stats.Luk * 0.2) + (stats.Dex * 0.05)
+        },
     },
 };
 

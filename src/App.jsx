@@ -2,6 +2,7 @@ import DerivedStatsPanel from "./features/characters/components/DerivedStatsPane
 import JobPanel from "./features/characters/components/JobPanel";
 import LevelPanel from "./features/characters/components/LevelPanel";
 import StatPanel from "./features/characters/components/StatPanel";
+import EquipmentPanel from "./features/characters/components/EquipmentPanel";
 function App() {
 
 
@@ -12,6 +13,7 @@ function App() {
       <StatPanel />
       <DerivedStatsPanel />
       <JobPanel />
+      <EquipmentPanel />
     </div>
   )
 }

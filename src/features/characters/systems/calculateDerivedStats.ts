@@ -25,7 +25,7 @@ export function calculateDerivedStats(
     equippedItems: EquippedItems,
 ): DerivedStats {
 
-    const jobData = JOBS[job];
+    const jobData = JOBS[job]!;
 
     const weapon = equippedItems.weapon
         ? EQUIPMENTS.weapon[equippedItems.weapon]

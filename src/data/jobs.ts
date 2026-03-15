@@ -14,6 +14,7 @@ export type Job = {
 }
 
 /* 기본 크리티컬 데미지 2배 */
+
 export const BASE_CRIT_DAMAGE = 2;
 
 export const JOBS: Record<string, Job> = {

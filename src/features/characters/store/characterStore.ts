@@ -3,19 +3,61 @@ import { EQUIPMENTS } from "../../../data/equipments";
 import { JOBS } from "../../../data/jobs";
 import { canChangeJob } from "../utils/canChangeJob";
 
-const defaultJob = "adventure";
-const POINT_PER_LEVEL = 5;
+import type { Stats } from "../../../types/stats";
+import type { JobType } from "../../../data/jobs";
+import type { WeaponId, ArmorId } from "../../../data/equipments";
 
-export const useCharacterStore = create((set) => ({
+type EquipmentSlot = "weapon" | "armor";
+
+type EquippedItems = {
+    weapon: WeaponId | null,
+    armor: ArmorId | null,
+}
+
+type CharacterState = {
+    level: number,
+    job: JobType;
+
+    stats: Stats;
+    baseStats: Stats;
+
+    remainingPoints: number,
+
+    skills: string[],
+
+    equippedItems: EquippedItems,
+
+    levelUp: () => void;
+    statReset: () => void;
+
+    changeJob: (jobKey: JobType) => void;
+
+    equipItem: (slot: EquipmentSlot, itemId: WeaponId | ArmorId) => void;
+    unEquipItem: (slot: EquipmentSlot) => void;
+
+    increaseStat: (stat: keyof Stats) => void;
+    decreaseStat: (stat: keyof Stats) => void;
+}
+
+const defaultJob: JobType = "adventure";
+const POINT_PER_LEVEL = 5;
+const DEFAULT_STATS: Stats = {
+    Str: 8,
+    Dex: 8,
+    Int: 8,
+    Luk: 8,
+}
+
+export const useCharacterStore = create<CharacterState>((set, get) => ({
     level: 1,
 
     job: defaultJob,
 
     // 캐릭터 총합 능력치
-    stats: { ...JOBS[defaultJob].baseStats },
+    stats: { ...DEFAULT_STATS },
 
     // 모험가 기본 능력치
-    baseStats: { ...JOBS[defaultJob].baseStats },
+    baseStats: { ...DEFAULT_STATS },
 
     levelUp: () => {
         set((state) => ({
@@ -55,11 +97,13 @@ export const useCharacterStore = create((set) => ({
     },
 
     //장비 장착 함수
-    equipItem: (slot, itemId) => {
+    equipItem: (slot: EquipmentSlot, itemId: WeaponId | ArmorId) => {
         const job = get().job;
         const item = EQUIPMENTS[slot][itemId];
 
-        if (!item.allowedJobs.includes(job)) {
+        if (!item) return;
+
+        if (item.allowedJobs && !item.allowedJobs.includes(job)) {
             console.log("이 직업은 장착할 수 없습니다");
             return;
         }
@@ -81,7 +125,7 @@ export const useCharacterStore = create((set) => ({
         }))
     },
 
-    increaseStat: (stat) => set((state) => {
+    increaseStat: (stat: keyof Stats) => set((state) => {
         if (state.remainingPoints <= 0) return state;
 
         return {
@@ -93,7 +137,7 @@ export const useCharacterStore = create((set) => ({
         }
     }),
 
-    decreaseStat: (stat) => set((state) => {
+    decreaseStat: (stat: keyof Stats) => set((state) => {
         if (state.stats[stat] <= state.baseStats[stat]) return state;
 
         return {

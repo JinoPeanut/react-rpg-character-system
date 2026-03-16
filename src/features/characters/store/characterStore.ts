@@ -7,11 +7,12 @@ import type { Stats } from "../../../types/stats";
 import type { JobType } from "../../../data/jobs";
 import type { WeaponId, ArmorId } from "../../../data/equipments";
 
-type EquipmentSlot = "weapon" | "armor";
+type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
 type EquippedItems = {
     weapon: WeaponId | null,
-    armor: ArmorId | null,
+    armorTop: ArmorId | null,
+    armorBottom: ArmorId | null,
 }
 
 type CharacterState = {
@@ -32,7 +33,7 @@ type CharacterState = {
 
     changeJob: (jobKey: JobType) => void;
 
-    equipItem: (slot: EquipmentSlot, itemId: WeaponId | ArmorId) => void;
+    equipItem: (itemId: WeaponId | ArmorId) => void;
     unEquipItem: (slot: EquipmentSlot) => void;
 
     increaseStat: (stat: keyof Stats) => void;
@@ -93,13 +94,20 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
     // 기본 장착 장비
     equippedItems: {
         weapon: null,
-        armor: null,
+        armorTop: null,
+        armorBottom: null,
     },
 
     //장비 장착 함수
-    equipItem: (slot: EquipmentSlot, itemId: WeaponId | ArmorId) => {
+    equipItem: (itemId: WeaponId | ArmorId) => {
         const job = get().job;
-        const item = EQUIPMENTS[slot][itemId];
+        let item;
+
+        if (itemId in EQUIPMENTS.weapon) {
+            item = EQUIPMENTS.weapon[itemId as WeaponId];
+        } else {
+            item = EQUIPMENTS.armor[itemId as ArmorId];
+        }
 
         if (!item) return;
 
@@ -107,6 +115,8 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
             console.log("이 직업은 장착할 수 없습니다");
             return;
         }
+
+        const slot: EquipmentSlot = item.slot;
 
         set((state) => ({
             equippedItems: {
@@ -116,7 +126,7 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
         }))
     },
 
-    unEquipItem: (slot) => {
+    unEquipItem: (slot: EquipmentSlot) => {
         set((state) => ({
             equippedItems: {
                 ...state.equippedItems,

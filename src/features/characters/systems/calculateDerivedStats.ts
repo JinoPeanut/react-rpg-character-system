@@ -6,7 +6,8 @@ import type { Stats } from "../../../types/stats.js";
 
 type EquippedItems = {
     weapon: WeaponId | null,
-    armor: ArmorId | null,
+    armorTop: ArmorId | null,
+    armorBottom: ArmorId | null,
 }
 
 type DerivedStats = {
@@ -31,15 +32,20 @@ export function calculateDerivedStats(
         ? EQUIPMENTS.weapon[equippedItems.weapon]
         : undefined
 
-    const armor = equippedItems.armor
-        ? EQUIPMENTS.armor[equippedItems.armor]
+    const armorTop = equippedItems.armorTop
+        ? EQUIPMENTS.armor[equippedItems.armorTop]
+        : undefined
+
+    const armorBottom = equippedItems.armorBottom
+        ? EQUIPMENTS.armor[equippedItems.armorBottom]
         : undefined
 
     const attack = jobData.attackFormula(stats) + (weapon?.attack ?? 0);
 
     const magic = jobData.magicFormula(stats) + (weapon?.magic ?? 0);
 
-    const defense = jobData.defenseFormula(stats) + (armor?.defense ?? 0);
+    const defense =
+        jobData.defenseFormula(stats) + (armorTop?.defense ?? 0) + (armorBottom?.defense ?? 0);
 
     const hp = jobData.hpFormula(level, jobData, stats);
     const critChance = jobData.baseCritChance;

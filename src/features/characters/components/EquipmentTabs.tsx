@@ -7,6 +7,7 @@ export default function EquipmentTabs() {
     const [tab, setTab] = useState<"weapon" | "armor">("weapon")
 
     const equipItem = useCharacterStore((s) => s.equipItem)
+    const equipped = useCharacterStore((s) => s.equippedItems)
 
     const items = Object.entries(EQUIPMENTS[tab])
 
@@ -25,14 +26,17 @@ export default function EquipmentTabs() {
 
             <h2>{tab === "weapon" ? "무기" : "방어구"}</h2>
 
-            {items.map(([id, item]) => (
-                <div
-                    key={id}
-                    onClick={() => equipItem(tab, id)}
-                >
-                    {item.name}
-                </div>
-            ))}
+            {items.map(([id, item]) => {
+                const isEquipped = equipped.weapon === id
+                return (
+                    <div
+                        key={id}
+                        onClick={() => equipItem(id)}
+                    >
+                        {item.name} {isEquipped && "(장착중)"}
+                    </div>
+                )
+            })}
 
         </div>
     )

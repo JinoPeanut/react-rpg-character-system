@@ -25,7 +25,7 @@ function DerivedStatsPanel() {
             <p>HP: {hp.toFixed(0)}</p>
             <p>방어력: {defense.toFixed(2)}</p>
             <p>크리티컬 확률: {(critChance * 100).toFixed(0)}%</p>
-            <p>크리티컬 대미지: {critDamage * 100}%</p>
+            <p>크리티컬 대미지: {(critDamage * 100).toFixed(0)}%</p>
         </div>
     )
 }

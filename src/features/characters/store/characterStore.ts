@@ -26,6 +26,12 @@ type CharacterState = {
 
     skills: string[],
 
+    // 인벤토리 관련
+    inventory: string[],
+    addItem: (itemId: string) => void,
+    removeItem: (itemId: string) => void,
+    equipFromInventory: (itemId: string) => void,
+
     equippedItems: EquippedItems,
 
     levelUp: () => void;
@@ -90,6 +96,24 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
 
     // 캐릭터가 가진 스킬들
     skills: [],
+
+    inventory: ["woodenSword", "clothTop", "clothBottom"],
+
+    addItem: (itemId) => set((state) => ({
+        inventory: [...state.inventory, itemId]
+    })),
+
+    removeItem: (itemId) => set((state) => ({
+        inventory: state.inventory.filter((id) => id !== itemId)
+    })),
+
+    equipFromInventory: (itemId) => set((state) => {
+        state.equipItem(itemId);
+
+        return {
+            inventory: state.inventory.filter((id) => id !== itemId),
+        }
+    }),
 
     // 기본 장착 장비
     equippedItems: {

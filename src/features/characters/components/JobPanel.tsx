@@ -2,8 +2,9 @@ import { JOBS } from "../../../data/jobs";
 import { useCharacterStore } from "../store/characterStore";
 import { canChangeJob } from "../utils/canChangeJob";
 
-function JobPanel() {
+export function JobPanel() {
     const stats = useCharacterStore((state) => state.stats);
+    const level = useCharacterStore((state) => state.level);
     const changeJob = useCharacterStore((state) => state.changeJob);
     const currentJob = useCharacterStore((state) => state.job);
 
@@ -14,7 +15,7 @@ function JobPanel() {
             {Object.entries(JOBS).map(([jobKey, job]) => {
                 if (jobKey === "adventure") return null;
 
-                const canChange = canChangeJob(jobKey, stats);
+                const canChange = canChangeJob(jobKey, stats, level);
 
                 return (
                     <div key={jobKey}>

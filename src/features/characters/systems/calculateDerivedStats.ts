@@ -15,6 +15,7 @@ type DerivedStats = {
     magic: number
     defense: number
     hp: number
+    mp: number,
     critChance: number
     critDamage: number
 }
@@ -48,6 +49,7 @@ export function calculateDerivedStats(
         jobData.defenseFormula(stats) + (armorTop?.defense ?? 0) + (armorBottom?.defense ?? 0);
 
     const hp = jobData.hpFormula(level, jobData, stats);
+    const mp = jobData.mpFormula(level, jobData, stats);
     const critChance = jobData.baseCritChance;
     const critDamage = BASE_CRIT_DAMAGE;
 
@@ -55,6 +57,7 @@ export function calculateDerivedStats(
         attack,
         magic,
         hp,
+        mp,
         critChance,
         defense,
         critDamage,

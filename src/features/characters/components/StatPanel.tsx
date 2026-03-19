@@ -16,30 +16,49 @@ function StatPanel() {
                 const key = stat as keyof typeof stats;
 
                 return (
-                    <div key={stat} className="flex">
-                        {stat} : {value}
-                        <button
-                            onClick={() => increaseStat(key)}
-                            disabled={remainingPoints <= 0}
-                            className="rounded border p-1 mr-1 ml-1 
-                            w-5 h-5 flex items-center justify-center leading-none"
-                        >
-                            +
-                        </button>
-                        <button
-                            onClick={() => decreaseStat(key)}
-                            disabled={value <= baseStats[key]}
-                            className="rounded border p-1
-                            w-5 h-5 flex items-center justify-center leading-none"
-                        >
-                            -
-                        </button>
+                    <div key={stat} className="flex item-center gap-2">
+                        <span className="w-16">{stat}</span>
+                        <span className="w-8 text-center">{value}</span>
+
+                        <div className="flex gap-1 ml-auto">
+                            <button
+                                onClick={() => increaseStat(key)}
+                                disabled={remainingPoints <= 0}
+                                className="
+                            rounded border 
+                            shadow-[0_4px_10px_rgba(0,0,0,0.5)] w-5 h-5 flex
+                            hover:shadow-lg transition 
+                            items-center justify-center 
+                            leading-none"
+                            >
+                                +
+                            </button>
+                            <button
+                                onClick={() => decreaseStat(key)}
+                                disabled={value <= baseStats[key]}
+                                className="
+                            rounded border 
+                            shadow-[0_4px_10px_rgba(0,0,0,0.5)] w-5 h-5 flex
+                            hover:shadow-lg transition
+                            items-center justify-center 
+                            leading-none"
+                            >
+                                -
+                            </button>
+                        </div>
                     </div>
                 )
             })}
 
-            <div>
-                <button onClick={statReset}>
+            <div className="flex justify-end">
+                <button
+                    onClick={statReset}
+                    className="
+                        border rounded p-1 mt-3
+                        hover:shadow-[0_2px_8px_red]
+                        hover:bg-red-400
+                    "
+                >
                     전체 초기화
                 </button>
             </div>

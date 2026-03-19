@@ -14,12 +14,12 @@ function InventoryPanel() {
     return (
         <div>
             <div className="
-                bg-gray-400 p-4 
+                bg-gray-400 p-4
                 flex flex-col 
                 justify-center 
                 items-center
                 rounded shadow-lg
-                border
+                gap-2
             ">
                 <h2 className="text-lg font-bold">인벤토리</h2>
 

@@ -18,14 +18,27 @@ function DerivedStatsPanel() {
     } = calculateDerivedStats(level, job, stats, equippedItems);
 
     return (
-        <div>
-            <p>공격력: {attack.toFixed(2)}</p>
-            <p>마력: {magic.toFixed(2)}</p>
-            <p>HP: {hp.toFixed(0)}</p>
-            <p>MP: {mp.toFixed(0)}</p>
-            <p>방어력: {defense.toFixed(2)}</p>
-            <p>크리티컬 확률: {(critChance * 100).toFixed(0)}%</p>
-            <p>크리티컬 대미지: {(critDamage * 100).toFixed(0)}%</p>
+        <div className="rounded-md bg-gray-500 p-2 grid grid-cols-[150px_80px] gap-y-1">
+            <span>공격력:</span>
+            <span>{attack.toFixed(2)}</span>
+
+            <span>마력:</span>
+            <span>{magic.toFixed(2)}</span>
+
+            <span>HP:</span>
+            <span>{hp.toFixed(0)}</span>
+
+            <span>MP:</span>
+            <span>{mp.toFixed(0)}</span>
+
+            <span>방어력:</span>
+            <span>{defense.toFixed(2)}</span>
+
+            <span>크리티컬 확률:</span>
+            <span>{(critChance * 100).toFixed(0)}%</span>
+
+            <span>크리티컬 대미지:</span>
+            <span>{(critDamage * 100).toFixed(0)}%</span>
         </div>
     )
 }

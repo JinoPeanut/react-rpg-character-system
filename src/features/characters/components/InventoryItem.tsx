@@ -1,4 +1,5 @@
 import { EQUIPMENTS } from "../../../data/equipments"
+import { useCharacterStore } from "../store/characterStore";
 
 export type InventoryItemProps = {
     itemId: string,
@@ -7,16 +8,25 @@ export type InventoryItemProps = {
 function InventoryItem({ itemId }: InventoryItemProps) {
 
     const item = EQUIPMENTS.weapon[itemId] || EQUIPMENTS.armor[itemId];
+    const equipItem = useCharacterStore((s) => s.equipItem)
+
+    const handleEquip = (itemId: string) => {
+        equipItem(itemId);
+    }
 
     return (
         <div className="relative group w-16 h-16">
-            <div className="
+            <div onDoubleClick={() => equipItem(itemId)}
+                className="
                 w-16
                 h-16
                 border
                 flex
                 items-center
                 justify-center
+                p-1
+                text-sm
+                cursor-pointer
             ">
                 {item?.name}
             </div>

@@ -97,7 +97,11 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
     // 캐릭터가 가진 스킬들
     skills: [],
 
-    inventory: ["woodenSword", "clothTop", "clothBottom"],
+    inventory: [
+        "woodenSword", "clothTop",
+        "clothBottom", "woodenStaff",
+        "woodenDagger", "woodenBow"
+    ],
 
     addItem: (itemId) => set((state) => ({
         inventory: [...state.inventory, itemId]
@@ -142,21 +146,37 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
 
         const slot: EquipmentSlot = item.slot;
 
-        set((state) => ({
-            equippedItems: {
-                ...state.equippedItems,
-                [slot]: itemId,
+        set((state) => {
+
+            const prevItem = state.equippedItems[slot];
+
+            return {
+                equippedItems: {
+                    ...state.equippedItems,
+                    [slot]: itemId,
+                },
+                inventory: [
+                    ...state.inventory.filter(id => id !== itemId),
+                    ...(prevItem ? [prevItem] : [])
+                ]
             }
-        }))
+        })
     },
 
     unEquipItem: (slot: EquipmentSlot) => {
-        set((state) => ({
-            equippedItems: {
-                ...state.equippedItems,
-                [slot]: null,
+        set((state) => {
+            const itemId = state.equippedItems[slot];
+
+            if (!itemId) return state;
+
+            return {
+                equippedItems: {
+                    ...state.equippedItems,
+                    [slot]: null,
+                },
+                inventory: [...state.inventory, itemId],
             }
-        }))
+        })
     },
 
     increaseStat: (stat: keyof Stats) => set((state) => {

@@ -20,34 +20,31 @@ export default function EquippedItems() {
 
     return (
         <div>
-
-            <h2>장착중</h2>
-
-            <div>
-                무기: {weapon ? weapon.name : "없음"}
-                {weapon && (
-                    <button onClick={() => unEquipItem("weapon")}>
-                        해제
-                    </button>
-                )}
+            <div onDoubleClick={() => unEquipItem("weapon")}
+                className="
+                absolute top-[39%] bg-white w-20 h-20 opacity-90
+                left-[3%]
+                flex flex-col items-center justify-center text-sm
+            ">
+                {weapon ? weapon.name : ""}
             </div>
 
-            <div>
-                상의: {armorTop ? armorTop.name : "없음"}
-                {armorTop && (
-                    <button onClick={() => unEquipItem("armorTop")}>
-                        해제
-                    </button>
-                )}
+            <div onDoubleClick={() => unEquipItem("armorTop")}
+                className="
+                    absolute bg-white w-20 h-20 opacity-90
+                    top-[19%] left-1/2 -translate-x-1/2
+                    flex flex-col items-center justify-center text-sm
+                ">
+                {armorTop ? armorTop.name : ""}
             </div>
 
-            <div>
-                하의: {armorBottom ? armorBottom.name : "없음"}
-                {armorBottom && (
-                    <button onClick={() => unEquipItem("armorBottom")}>
-                        해제
-                    </button>
-                )}
+            <div onDoubleClick={() => unEquipItem("armorBottom")}
+                className="
+                absolute bg-white w-20 h-20 opacity-90
+                top-[50%] left-1/2 -translate-x-1/2
+                flex flex-col items-center justify-center text-sm
+            ">
+                {armorBottom ? armorBottom.name : ""}
             </div>
 
         </div >

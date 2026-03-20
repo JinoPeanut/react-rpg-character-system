@@ -5,7 +5,6 @@ function App() {
 
   return (
     <div>
-      <h1>Character build</h1>
       <TabMenu />
     </div>
   )

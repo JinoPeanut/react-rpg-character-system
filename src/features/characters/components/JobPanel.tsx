@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { JOBS } from "../../../data/jobs";
 import { useCharacterStore } from "../store/characterStore";
 import { canChangeJob } from "../utils/canChangeJob";
@@ -8,28 +9,61 @@ export function JobPanel() {
     const changeJob = useCharacterStore((state) => state.changeJob);
     const currentJob = useCharacterStore((state) => state.job);
 
+    const [selectJob, setSelectJob] = useState<string | null>(null);
+
     return (
         <div>
-            <h2>직업 선택</h2>
+            <div className="flex gap-4 bg-gray-400 p-4 rounded">
+                {Object.entries(JOBS).map(([jobKey, job]) => {
+                    if (jobKey === "adventure") return null;
 
-            {Object.entries(JOBS).map(([jobKey, job]) => {
-                if (jobKey === "adventure") return null;
+                    const canChange = canChangeJob(jobKey, stats, level);
 
-                const canChange = canChangeJob(jobKey, stats, level);
+                    return (
+                        <div key={jobKey}>
+                            <div onClick={() => setSelectJob(jobKey)}
+                                className={`
+                                border p-4 rounded
+                                cursor-pointer
+                                ${selectJob === jobKey
+                                        ? "border-blue-500 bg-blue-50"
+                                        : "border-gray-300 hover:bg-gray-200"
+                                    }
+                            `}>
+                                {job.name} (Lv. {job.requireLevel})
+                            </div>
 
-                return (
-                    <div key={jobKey}>
-                        {job.name} (Lv. {job.requireLevel})
-
-                        <button
-                            onClick={() => changeJob(jobKey)}
-                            disabled={!canChange}
-                        >
-                            전직
-                        </button>
+                            <button
+                                onClick={() => changeJob(jobKey)}
+                                disabled={!canChange || currentJob !== "adventure"}
+                                className={`
+                                w-full mt-4 py-2 rounded-lg
+                                bg-blue-500 text-white
+                                hover:bg-blue-600
+                                active:scale-95
+                                transition
+                                ${canChange && currentJob === "adventure"
+                                        ? "cursor-pointer animate-glow"
+                                        : "bg-gray-500"}`}
+                            >
+                                {currentJob !== "adventure" ? "전직 완료" : "전직"}
+                            </button>
+                        </div>
+                    )
+                })}
+            </div>
+            <div
+                className="
+                    mt-6 border p-4 rounded w-full break-words
+                    max-w-2xl min-h-[120px] whitespace-pre-line
+                ">
+                {selectJob && (
+                    <div className="mt-6 border p-4 rounded">
+                        <h3>{JOBS[selectJob]?.name}</h3>
+                        <p>{JOBS[selectJob]?.description}</p>
                     </div>
-                )
-            })}
+                )}
+            </div>
         </div>
     )
 }

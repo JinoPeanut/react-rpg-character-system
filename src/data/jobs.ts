@@ -14,6 +14,7 @@ export type Job = {
     attackFormula: (stat: Stats) => number,
     magicFormula: (stat: Stats) => number,
     defenseFormula: (stat: Stats) => number,
+    description: string,
 }
 
 /* 기본 크리티컬 데미지 2배 */
@@ -45,6 +46,8 @@ export const JOBS: Record<string, Job> = {
         defenseFormula: (stats: Stats) => {
             return (stats.Str * 0.05) + (stats.Dex * 0.05) + (stats.Int * 0.05) + (stats.Luk * 0.05)
         },
+
+        description: "가장 기본적인 직업이며, 스탯의 성장에 따라 직업을 선택할 수 있습니다"
     },
 
     warrior: {
@@ -77,6 +80,8 @@ export const JOBS: Record<string, Job> = {
         defenseFormula: (stats: Stats) => {
             return (stats.Str * 0.25) + (stats.Dex * 0.05)
         },
+
+        description: "전사는 공격력 기반의 근거리 공격을 하는 직업이며, 높은 체력과 방어력을 가졌습니다",
     },
 
     archer: {
@@ -108,6 +113,8 @@ export const JOBS: Record<string, Job> = {
         defenseFormula: (stats: Stats) => {
             return (stats.Dex * 0.2) + (stats.Str * 0.05)
         },
+
+        description: "궁수는 공격력 기반의 원거리 공격을 하는 직업이며, 빠른 공격과 이동속도가 특징입니다"
     },
 
     mage: {
@@ -139,6 +146,8 @@ export const JOBS: Record<string, Job> = {
         defenseFormula: (stats: Stats) => {
             return (stats.Int * 0.1) + (stats.Luk * 0.05)
         },
+
+        description: "마법사는 마력 기반의 원거리 공격을 하는 직업이며, 모든직업중 가장 높은 화력을 가졌으며 많은 마나를 보유중입니다"
     },
 
     thief: {
@@ -170,6 +179,8 @@ export const JOBS: Record<string, Job> = {
         defenseFormula: (stats: Stats) => {
             return (stats.Luk * 0.2) + (stats.Dex * 0.05)
         },
+
+        description: "도적은 공격력 기반의 근거리 중거리 공격을 하는 직업이며, 높은 행운으로 변칙적이고 빠른 플레이가 특징입니다"
     },
 };
 

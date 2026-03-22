@@ -1,5 +1,4 @@
 import EquippedItems from "./EquippedItems"
-import EquipmentTabs from "./EquipmentTabs"
 import img from "../../../images/humanBody.png";
 
 export default function EquipmentPanel() {
@@ -13,8 +12,6 @@ export default function EquipmentPanel() {
             />
 
             <EquippedItems />
-
-            <EquipmentTabs />
 
         </div>
     )

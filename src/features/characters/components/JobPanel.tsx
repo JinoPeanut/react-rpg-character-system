@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { JOBS } from "../../../data/jobs";
+import { JOBS, type JobType } from "../../../data/jobs";
 import { useCharacterStore } from "../store/characterStore";
 import { canChangeJob } from "../utils/canChangeJob";
 
@@ -9,14 +9,15 @@ export function JobPanel() {
     const changeJob = useCharacterStore((state) => state.changeJob);
     const currentJob = useCharacterStore((state) => state.job);
 
-    const [selectJob, setSelectJob] = useState<string | null>(null);
+    const [selectJob, setSelectJob] = useState<JobType | null>(null);
 
     return (
         <div>
             <div className="flex gap-4 bg-gray-400 p-4 rounded">
-                {Object.entries(JOBS).map(([jobKey, job]) => {
+                {(Object.keys(JOBS) as JobType[]).map((jobKey) => {
                     if (jobKey === "adventure") return null;
 
+                    const job = JOBS[jobKey];
                     const canChange = canChangeJob(jobKey, stats, level);
 
                     return (

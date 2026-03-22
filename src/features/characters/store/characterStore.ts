@@ -9,7 +9,7 @@ import type { WeaponId, ArmorId } from "../../../data/equipments";
 
 type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
-type EquippedItems = {
+export type EquippedItems = {
     weapon: WeaponId | null,
     armorTop: ArmorId | null,
     armorBottom: ArmorId | null,

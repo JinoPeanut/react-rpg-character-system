@@ -1,8 +1,8 @@
-import { BASE_CRIT_DAMAGE, JOBS } from "../../../data/jobs.js";
-import { EQUIPMENTS } from "../../../data/equipments.js";
-import type { WeaponId, ArmorId } from "../../../data/equipments.js";
-import type { JobType } from "../../../data/jobs.js";
-import type { Stats } from "../../../types/stats.js";
+import { BASE_CRIT_DAMAGE, JOBS } from "../../../data/jobs";
+import { EQUIPMENTS } from "../../../data/equipments";
+import type { WeaponId, ArmorId } from "../../../data/equipments";
+import type { JobType } from "../../../data/jobs";
+import type { Stats } from "../../../types/stats";
 
 type EquippedItems = {
     weapon: WeaponId | null,
@@ -11,13 +11,13 @@ type EquippedItems = {
 }
 
 type DerivedStats = {
-    attack: number
-    magic: number
-    defense: number
-    hp: number
+    attack: number,
+    magic: number,
+    defense: number,
+    hp: number,
     mp: number,
-    critChance: number
-    critDamage: number
+    critChance: number,
+    critDamage: number,
 }
 
 export function calculateDerivedStats(

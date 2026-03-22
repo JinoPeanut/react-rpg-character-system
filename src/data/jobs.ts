@@ -1,4 +1,4 @@
-import type { Stats } from "../types/stats.js";
+import type { Stats } from "../types/stats";
 
 export type Job = {
     name: string,
@@ -9,6 +9,8 @@ export type Job = {
     hpPerLevel: number,
     mpPerLevel: number,
     baseCritChance: number,
+    mainStat?: "Str" | "Dex" | "Int" | "Luk",
+    attackType: "attack" | "magic",
     hpFormula: (level: number, job: Job, stats: Stats) => number,
     mpFormula: (level: number, job: Job, stats: Stats) => number,
     attackFormula: (stat: Stats) => number,
@@ -17,11 +19,13 @@ export type Job = {
     description: string,
 }
 
+export type JobType = "adventure" | "warrior" | "archer" | "mage" | "thief";
+
 /* 기본 크리티컬 데미지 2배 */
 
 export const BASE_CRIT_DAMAGE = 2;
 
-export const JOBS: Record<string, Job> = {
+export const JOBS: Record<JobType, Job> = {
 
     adventure: {
         name: "모험가",
@@ -30,6 +34,7 @@ export const JOBS: Record<string, Job> = {
         hpPerLevel: 10,
         mpPerLevel: 1,
         baseCritChance: 0.1,
+        attackType: "attack",
 
         hpFormula: (level: number, job: Job, stats: Stats) => job.baseHp + ((level - 1) * job.hpPerLevel),
 
@@ -61,6 +66,8 @@ export const JOBS: Record<string, Job> = {
         hpPerLevel: 20,
         mpPerLevel: 5,
         baseCritChance: 0.2,
+        mainStat: "Str",
+        attackType: "attack",
 
         hpFormula: (level: number, job: Job, stats: Stats) => {
             return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Str * 2)
@@ -95,6 +102,8 @@ export const JOBS: Record<string, Job> = {
         hpPerLevel: 15,
         mpPerLevel: 10,
         baseCritChance: 0.35,
+        mainStat: "Dex",
+        attackType: "attack",
 
         hpFormula: (level: number, job: Job, stats: Stats) => {
             return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Dex * 1.7)
@@ -128,6 +137,8 @@ export const JOBS: Record<string, Job> = {
         hpPerLevel: 10,
         mpPerLevel: 30,
         baseCritChance: 0.2,
+        mainStat: "Int",
+        attackType: "magic",
 
         hpFormula: (level: number, job: Job, stats: Stats) => {
             return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Int * 1)
@@ -161,6 +172,8 @@ export const JOBS: Record<string, Job> = {
         hpPerLevel: 13,
         mpPerLevel: 12,
         baseCritChance: 0.3,
+        mainStat: "Luk",
+        attackType: "attack",
 
         hpFormula: (level: number, job: Job, stats: Stats) => {
             return job.baseHp + ((level - 1) * job.hpPerLevel) + (stats.Luk * 1.5)
@@ -183,5 +196,3 @@ export const JOBS: Record<string, Job> = {
         description: "도적은 공격력 기반의 근거리 중거리 공격을 하는 직업이며, 높은 행운으로 변칙적이고 빠른 플레이가 특징입니다"
     },
 };
-
-export type JobType = keyof typeof JOBS

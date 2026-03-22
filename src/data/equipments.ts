@@ -1,4 +1,4 @@
-import type { JobType } from "./jobs.js";
+import type { JobType } from "./jobs";
 
 export type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 

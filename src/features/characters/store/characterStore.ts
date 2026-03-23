@@ -6,6 +6,8 @@ import { canChangeJob } from "../utils/canChangeJob";
 import type { Stats } from "../../../types/stats";
 import type { JobType } from "../../../data/jobs";
 import type { WeaponId, ArmorId } from "../../../data/equipments";
+import { calculateDerivedStats } from "../systems/calculateDerivedStats";
+import { SKILLS } from "../../../data/skills";
 
 type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
@@ -15,14 +17,22 @@ export type EquippedItems = {
     armorBottom: ArmorId | null,
 }
 
+export type SkillLevel = Partial<Record<string, number>>
+
 type CharacterState = {
     level: number,
-    job: JobType;
+    job: JobType,
 
-    stats: Stats;
-    baseStats: Stats;
+    stats: Stats,
+    baseStats: Stats,
 
     remainingPoints: number,
+
+    skillPoints: number,
+    skillLevels: SkillLevel,
+
+    hp: number,
+    mp: number,
 
     skills: string[],
 
@@ -34,16 +44,20 @@ type CharacterState = {
 
     equippedItems: EquippedItems,
 
-    levelUp: () => void;
-    statReset: () => void;
+    levelUp: () => void,
+    statReset: () => void,
 
-    changeJob: (jobKey: JobType) => void;
+    changeJob: (jobKey: JobType) => void,
 
-    equipItem: (itemId: WeaponId | ArmorId) => void;
-    unEquipItem: (slot: EquipmentSlot) => void;
+    equipItem: (itemId: WeaponId | ArmorId) => void,
+    unEquipItem: (slot: EquipmentSlot) => void,
 
-    increaseStat: (stat: keyof Stats) => void;
-    decreaseStat: (stat: keyof Stats) => void;
+    increaseStat: (stat: keyof Stats) => void,
+    decreaseStat: (stat: keyof Stats) => void,
+
+    useSkill: (skillId: string) => void,
+
+    upgradeSkill: (skillId: string) => void,
 }
 
 const defaultJob: JobType = "adventure";
@@ -70,6 +84,7 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
         set((state) => ({
             level: state.level + 1,
             remainingPoints: state.remainingPoints + POINT_PER_LEVEL,
+            skillPoints: state.skillPoints + 1,
         }))
     },
 
@@ -93,6 +108,12 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
 
     // 남은 캐릭터 스탯
     remainingPoints: 0,
+
+    skillPoints: 1,
+    skillLevels: {},
+
+    hp: 100,
+    mp: 100,
 
     // 캐릭터가 가진 스킬들
     skills: [],
@@ -202,4 +223,58 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
             remainingPoints: state.remainingPoints + 1,
         }
     }),
+
+    useSkill: (skillId: string) => {
+        const state = get();
+
+        const skillData = SKILLS[state.job]?.[skillId];
+
+        if (!skillData) {
+            console.log("스킬을 찾을 수 없습니다");
+            return;
+        }
+
+        if (skillData.cost === null) {
+            console.log("아직 구현되지 않은 스킬입니다");
+            return;
+        }
+
+        if (state.mp < skillData.cost) {
+            console.log("마나가 부족합니다");
+            return;
+        }
+
+        set({ mp: state.mp - skillData.cost });
+    },
+
+    upgradeSkill: (skillId: string) => {
+        const state = get();
+
+        if (state.skillPoints <= 0) {
+            console.log("스킬 포인트가 부족합니다");
+            return;
+        }
+
+        const skillData = SKILLS[state.job]?.[skillId];
+
+        if (!skillData || skillData.maxLevel === null) {
+            console.log("스킬을 찾을 수 없습니다");
+            return;
+        }
+
+        const currentLevel = state.skillLevels[skillId] ?? 0;
+
+        if (currentLevel <= skillData.maxLevel) {
+            console.log("최대 레벨입니다");
+            return;
+        }
+
+        set({
+            skillPoints: state.skillPoints - 1,
+            skillLevels: {
+                ...state.skillLevels,
+                [skillId]: currentLevel + 1,
+            }
+        });
+    },
 }));

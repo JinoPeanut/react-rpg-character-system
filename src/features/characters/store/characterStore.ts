@@ -101,8 +101,15 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
             return state;
         }
 
+        const jobData = JOBS[jobKey];
+        const requireLevel = jobData.requireLevel ?? 1;
+
+        const skillPointsOnJob = state.level - requireLevel + 1;
+
         return {
             job: jobKey,
+            skillPoints: skillPointsOnJob,
+            skillLevels: {},
         }
     }),
 
@@ -264,7 +271,7 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
 
         const currentLevel = state.skillLevels[skillId] ?? 0;
 
-        if (currentLevel <= skillData.maxLevel) {
+        if (currentLevel >= skillData.maxLevel) {
             console.log("최대 레벨입니다");
             return;
         }

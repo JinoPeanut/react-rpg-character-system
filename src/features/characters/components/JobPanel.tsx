@@ -39,13 +39,13 @@ export function JobPanel() {
                                 disabled={!canChange || currentJob !== "adventure"}
                                 className={`
                                 w-full mt-4 py-2 rounded-lg
-                                bg-blue-500 text-white
-                                hover:bg-blue-600
+                                bg-purple-500 text-white
+                                hover:bg-purple-600
                                 active:scale-95
                                 transition
                                 ${canChange && currentJob === "adventure"
                                         ? "cursor-pointer animate-glow"
-                                        : "bg-gray-500"}`}
+                                        : "bg-gray-500 text-gray-400"}`}
                             >
                                 {currentJob !== "adventure" ? "전직 완료" : "전직"}
                             </button>
@@ -57,6 +57,7 @@ export function JobPanel() {
                 className="
                     mt-6 border p-4 rounded w-full break-words
                     max-w-2xl min-h-[120px] whitespace-pre-line
+                    text-gray-400
                 ">
                 {selectJob && (
                     <div className="mt-6 border p-4 rounded">

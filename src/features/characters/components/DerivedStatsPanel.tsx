@@ -18,7 +18,7 @@ function DerivedStatsPanel() {
     } = calculateDerivedStats(level, job, stats, equippedItems);
 
     return (
-        <div className="rounded-md bg-gray-500 p-2 grid grid-cols-[150px_80px] gap-y-1">
+        <div className="rounded-md bg-gray-800/50 p-2 grid grid-cols-[150px_80px] gap-y-1">
             <span>공격력:</span>
             <span>{attack.toFixed(2)}</span>
 

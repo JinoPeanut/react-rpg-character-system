@@ -24,7 +24,11 @@ export function calculateSkillDamage(
     const attackOrMagic = derived[jobData.attackType];
 
     const skillLevel = skillLevels[skill.id] ?? 0;
-    const skillPercent = ((skill.damage ?? 100) + (skill.damagePerLevel ?? 0) * (skillLevel - 1)) / 100;
+
+    const totalIncrease = skill.maxLevel !== null && skill.maxLevel > 1
+        ? (skill.damagePerLevel ?? 0) * (skillLevel - 1) / (skill.maxLevel - 1)
+        : 0;
+    const skillPercent = ((skill.damage ?? 100) + totalIncrease) / 100;
 
     const isCritical = Math.random() < derived.critChance;
     const critMultiplier = isCritical ? derived.critDamage : 1;

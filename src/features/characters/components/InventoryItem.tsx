@@ -6,6 +6,7 @@ export type InventoryItemProps = {
 }
 
 function getItemIcon(itemId: string) {
+    if (!itemId) return null;
     if (itemId in EQUIPMENTS.weapon) return "⚔️";
     return "🛡️";
 }

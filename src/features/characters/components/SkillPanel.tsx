@@ -11,7 +11,7 @@ export function SkillPanel() {
     const jobSkills = SKILLS[job as JobType];
 
     return (
-        <div className="p-4 bg-gray-400 w-[500px]">
+        <div className="p-4 bg-gray-900 w-[500px] rounded-lg">
 
             {/* 스킬 포인트 잔여량 */}
             <div className="mb-4 text-right">
@@ -40,8 +40,9 @@ export function SkillPanel() {
                         <div
                             key={skillKey}
                             className={`
+                                relative group
                                 border rounded-lg p-4 flex justify-between items-center
-                                transition-all duration-300
+                                transition-all duration-300 
                                 ${isActive
                                     ? "border-blue-400 bg-blue-950 text-white"
                                     : "border-gray-600 bg-gray-800 text-gray-400"
@@ -89,6 +90,27 @@ export function SkillPanel() {
                             >
                                 {isMaxLevel ? "MAX" : "+ 찍기"}
                             </button>
+
+                            {/* 툴팁 표시 */}
+                            <div className="
+                                absolute opacity-0 group-hover:opacity-100
+                                z-10 bg-gray-900 border border-gray-600
+                                text-white text-sm p-3 rounded-lg
+                                shadow-xl whitespace-nowrap
+                                bottom-full mb-2 left-0
+                                pointer-events-none
+                                transition-opacity duration-150
+                            ">
+                                <div className="font-bold text-yellow-400 mb-1">
+                                    {skill.name}
+                                </div>
+                                <p className="text-gray-300 text-xs">
+                                    {skill.description}
+                                </p>
+                                <div className="mt-2 text-xs text-gray-500">
+                                    마나 소모: {skill.cost}
+                                </div>
+                            </div>
                         </div>
                     )
                 })}

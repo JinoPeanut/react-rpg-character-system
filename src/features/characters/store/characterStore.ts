@@ -8,6 +8,7 @@ import type { JobType } from "../../../data/jobs";
 import type { WeaponId, ArmorId } from "../../../data/equipments";
 import { calculateDerivedStats } from "../systems/calculateDerivedStats";
 import { SKILLS } from "../../../data/skills";
+import { POTIONS, type PotionId } from "../../../data/potions";
 
 type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
@@ -34,10 +35,14 @@ type CharacterState = {
     hp: number,
     mp: number,
 
+    exp: number,
+    checkLevelUp: () => void,
+
     skills: string[],
 
     // 인벤토리 관련
     inventory: string[],
+    usePotion: (potionId: string) => void,
     addItem: (itemId: string) => void,
     removeItem: (itemId: string) => void,
     equipFromInventory: (itemId: string) => void,
@@ -69,6 +74,23 @@ const DEFAULT_STATS: Stats = {
     Luk: 8,
 }
 
+const initialDerived = calculateDerivedStats(
+    1,
+    defaultJob,
+    DEFAULT_STATS,
+    { weapon: null, armorTop: null, armorBottom: null },
+);
+
+export const getRequiredExp = (level: number): number => {
+    if (level < 10) {
+        return level * 10;
+    } else if (level < 20) {
+        return level * 20;
+    } else {
+        return level * 30;
+    }
+}
+
 export const useCharacterStore = create<CharacterState>((set, get) => ({
     level: 1,
 
@@ -81,11 +103,25 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
     baseStats: { ...DEFAULT_STATS },
 
     levelUp: () => {
-        set((state) => ({
-            level: state.level + 1,
-            remainingPoints: state.remainingPoints + POINT_PER_LEVEL,
-            skillPoints: state.skillPoints + 1,
-        }))
+        set((state) => {
+            const derived = calculateDerivedStats(
+                state.level + 1,
+                state.job,
+                state.stats,
+                state.equippedItems,
+            );
+
+            return {
+                level: state.level + 1,
+                remainingPoints: state.remainingPoints + POINT_PER_LEVEL,
+                skillPoints: state.job === "adventure"
+                    ? state.skillPoints + 1
+                    : state.skillPoints + 1,
+                hp: derived.hp,
+                mp: derived.mp,
+
+            }
+        })
     },
 
     statReset: () => {
@@ -119,8 +155,34 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
     skillPoints: 1,
     skillLevels: {},
 
-    hp: 100,
-    mp: 100,
+    hp: initialDerived.hp,
+    mp: initialDerived.mp,
+
+    exp: 0,
+    checkLevelUp: () => {
+        const state = get();
+        const required = getRequiredExp(state.level);
+
+        if (state.exp >= required) {
+            const derived = calculateDerivedStats(
+                state.level + 1,
+                state.job,
+                state.stats,
+                state.equippedItems,
+            );
+
+            set({
+                level: state.level + 1,
+                exp: state.exp - required,
+                remainingPoints: state.remainingPoints + POINT_PER_LEVEL,
+                skillPoints: state.skillPoints + 1,
+                hp: derived.hp,
+                mp: derived.mp,
+            });
+
+            get().checkLevelUp();
+        }
+    },
 
     // 캐릭터가 가진 스킬들
     skills: [],
@@ -128,8 +190,43 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
     inventory: [
         "woodenSword", "clothTop",
         "clothBottom", "woodenStaff",
-        "woodenDagger", "woodenBow"
+        "woodenDagger", "woodenBow",
+        "hpPotion", "mpPotion",
     ],
+
+    usePotion: (potionId: string) => {
+        const state = get();
+
+        if (!state.inventory.includes(potionId)) {
+            console.log("포션이 없습니다");
+            return;
+        }
+
+        const potion = POTIONS[potionId as PotionId];
+        if (!potion) return;
+
+        const derived = calculateDerivedStats(
+            state.level,
+            state.job,
+            state.stats,
+            state.equippedItems,
+        );
+
+        const newHp = Math.min(derived.hp, state.hp + potion.hpRestore);
+        const newMp = Math.min(derived.mp, state.mp + potion.mpRestore);
+
+        const idx = state.inventory.indexOf(potionId);
+        const newInventory = [
+            ...state.inventory.slice(0, idx),
+            ...state.inventory.slice(idx + 1),
+        ];
+
+        set({
+            hp: newHp,
+            mp: newMp,
+            inventory: newInventory,
+        })
+    },
 
     addItem: (itemId) => set((state) => ({
         inventory: [...state.inventory, itemId]

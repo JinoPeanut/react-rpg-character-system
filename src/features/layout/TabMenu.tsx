@@ -4,10 +4,11 @@ import CharacterPanel from "../characters/components/CharacterPanel";
 import JobPanel from "../characters/components/JobPanel";
 import EquipmentPanel from "../characters/components/EquipmentPanel";
 import SkillPanel from "../characters/components/SkillPanel";
+import BattlePanel from "../characters/components/BattlePanel";
 
 export function TabMenu() {
     const [tab, setTab] =
-        useState<"character" | "inventory" | "job" | "equipment" | "skill">("character");
+        useState<"character" | "inventory" | "job" | "equipment" | "skill" | "battle">("character");
 
     return (
         <div className="flex flex-col items-center">
@@ -62,6 +63,17 @@ export function TabMenu() {
                 >
                     스킬
                 </button>
+                <button
+                    onClick={() => setTab("battle")}
+                    className={`px-4 py-2 rounded-t-lg border
+                    ${tab === "battle"
+                            ? "bg-gray-400 border-b-transparent"
+                            : "bg-gray-600"
+                        }`}
+                >
+                    전투
+                </button>
+
             </div>
             <div className="-mt-[1px]">
                 {tab === "character" && <CharacterPanel />}
@@ -69,6 +81,7 @@ export function TabMenu() {
                 {tab === "job" && <JobPanel />}
                 {tab === "equipment" && <EquipmentPanel />}
                 {tab === "skill" && <SkillPanel />}
+                {tab === "battle" && <BattlePanel />}
             </div>
         </div>
     )

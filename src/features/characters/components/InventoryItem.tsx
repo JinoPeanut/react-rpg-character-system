@@ -1,5 +1,6 @@
 import { EQUIPMENTS, type ArmorId, type WeaponId } from "../../../data/equipments"
 import { useCharacterStore } from "../store/characterStore";
+import { POTIONS, type PotionId } from "../../../data/potions";
 
 export type InventoryItemProps = {
     itemId: string | null,
@@ -8,6 +9,7 @@ export type InventoryItemProps = {
 function getItemIcon(itemId: string) {
     if (!itemId) return null;
     if (itemId in EQUIPMENTS.weapon) return "⚔️";
+    if (itemId in POTIONS) return "🧪";
     return "🛡️";
 }
 
@@ -34,7 +36,8 @@ function InventoryItem({ itemId }: InventoryItemProps) {
     }
 
     const item = EQUIPMENTS.weapon[itemId as WeaponId]
-        ?? EQUIPMENTS.armor[itemId as ArmorId];
+        ?? EQUIPMENTS.armor[itemId as ArmorId]
+        ?? POTIONS[itemId as PotionId];
 
     if (!item) return null;
 
@@ -83,21 +86,35 @@ function InventoryItem({ itemId }: InventoryItemProps) {
 
                 {/* 스탯 수치 */}
                 <div className="flex flex-col gap-1 text-xs">
-                    {item.attack
+                    {'attack' in item && item.attack
                         ? (<span className="text-red-400">
                             ⚔️ 공격력 +{item.attack}
                         </span>)
                         : null
                     }
-                    {item.magic
+                    {'magic' in item && item.magic
                         ? (<span className="text-blue-400">
                             ✨ 마력 +{item.magic}
                         </span>)
                         : null
                     }
-                    {item.defense
+                    {'defense' in item && item.defense
                         ? (<span className="text-green-400">
                             🛡️ 방어력 +{item.defense}
+                        </span>)
+                        : null
+                    }
+
+                    {/* 포션일때 회복량 표시 */}
+                    {`hpRestore` in item && item.hpRestore > 0
+                        ? (<span className="text-red-400">
+                            ❤️ HP +{item.hpRestore}
+                        </span>)
+                        : null
+                    }
+                    {'mpRestore' in item && item.mpRestore > 0
+                        ? (<span className="text-blue-400">
+                            💧 MP +{item.mpRestore}
                         </span>)
                         : null
                     }

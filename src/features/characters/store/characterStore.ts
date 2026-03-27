@@ -9,6 +9,7 @@ import type { WeaponId, ArmorId } from "../../../data/equipments";
 import { calculateDerivedStats } from "../systems/calculateDerivedStats";
 import { SKILLS } from "../../../data/skills";
 import { POTIONS, type PotionId } from "../../../data/potions";
+import { SHOP_ITEMS } from "../../../data/shop";
 
 type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
@@ -31,6 +32,13 @@ type CharacterState = {
 
     skillPoints: number,
     skillLevels: SkillLevel,
+
+    gold: number,
+    earnGold: (amount: number) => void,
+    spendGold: (amount: number) => boolean,
+
+    buyItem: (itemId: string) => void,
+    sellItem: (itemId: string) => void,
 
     hp: number,
     mp: number,
@@ -154,6 +162,65 @@ export const useCharacterStore = create<CharacterState>((set, get) => ({
 
     skillPoints: 1,
     skillLevels: {},
+
+    gold: 0,
+
+    earnGold: (amount: number) => {
+        set((state) => ({ gold: state.gold + amount }))
+    },
+
+    spendGold: (amount: number) => {
+        const state = get();
+        if (state.gold < amount) return false;
+        set({ gold: state.gold - amount })
+        return true;
+    },
+
+    buyItem: (itemId: string) => {
+        const state = get();
+        const shopItem = SHOP_ITEMS[itemId];
+
+        if (!shopItem) {
+            console.log("상점에 없는 아이템입니다");
+            return;
+        }
+
+        if (state.gold < shopItem.buyPrice) {
+            console.log("골드가 부족합니다");
+            return;
+        }
+
+        set({
+            gold: state.gold - shopItem.buyPrice,
+            inventory: [...state.inventory, itemId],
+        })
+    },
+
+    sellItem: (itemId: string) => {
+        const state = get();
+        const shopItem = SHOP_ITEMS[itemId];
+
+        if (!shopItem) {
+            console.log("판매할 수 없는 아이템 입니다");
+            return;
+        }
+
+        if (!state.inventory.includes(itemId)) {
+            console.log("인벤토리에 없는 아이템 입니다");
+            return;
+        }
+
+        const idx = state.inventory.indexOf(itemId);
+        const newInventory = [
+            ...state.inventory.slice(0, idx),
+            ...state.inventory.slice(idx + 1),
+        ];
+
+        set({
+            gold: state.gold + shopItem.sellPrice,
+            inventory: newInventory,
+        })
+    },
 
     hp: initialDerived.hp,
     mp: initialDerived.mp,

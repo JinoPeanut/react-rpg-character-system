@@ -234,6 +234,9 @@ export const useBattleStore = create<BattleState>((set, get) => ({
         useCharacterStore.setState({ exp: newExp });
         useCharacterStore.getState().checkLevelUp();
 
+        log = addLog(log, `💰 골드 +${currentMonster.goldDrop}`);
+        useCharacterStore.getState().earnGold(currentMonster.goldDrop);
+
         set({
             isBattling: false,
             isPlayerTurn: false,

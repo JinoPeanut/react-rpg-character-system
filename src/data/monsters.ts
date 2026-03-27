@@ -12,6 +12,7 @@ export type Monster = {
     defense: number,
     exp: number,
     drops: Drop[],  // 여러 개 드롭 가능하도록 배열로
+    goldDrop: number,
 }
 
 export type MonsterId = keyof typeof MONSTERS;
@@ -31,6 +32,7 @@ export const MONSTERS: Record<string, Monster> = {
             { itemId: "woodenSword", chance: 0.3 },
             { itemId: "clothTop", chance: 0.1 },
         ],
+        goldDrop: 10,
     },
 
     goblin: {
@@ -47,6 +49,7 @@ export const MONSTERS: Record<string, Monster> = {
             { itemId: "clothTop", chance: 0.3 },
             { itemId: "clothBottom", chance: 0.2 },
         ],
+        goldDrop: 25,
     },
 
     orc: {
@@ -63,6 +66,7 @@ export const MONSTERS: Record<string, Monster> = {
             { itemId: "clothBottom", chance: 0.25 },
             { itemId: "woodenDagger", chance: 0.15 },
         ],
+        goldDrop: 50,
     },
 
     darkKnight: {
@@ -80,5 +84,6 @@ export const MONSTERS: Record<string, Monster> = {
             { itemId: "woodenDagger", chance: 0.2 },
             { itemId: "woodenBow", chance: 0.1 },
         ],
+        goldDrop: 100,
     },
 }

@@ -1,8 +1,6 @@
-import EquipmentPanel from "./features/characters/components/EquipmentPanel";
 import TabMenu from "./features/layout/TabMenu"
+
 function App() {
-
-
   return (
     <div>
       <TabMenu />
@@ -11,7 +9,6 @@ function App() {
 }
 
 export default App
-
 
 /* 
   components: 공용 UI

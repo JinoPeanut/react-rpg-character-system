@@ -1,4 +1,4 @@
-import { EQUIPMENTS, type ArmorId, type WeaponId } from "../../../data/equipments"
+import { EQUIPMENTS, type ArmorId, type Equipment, type WeaponId } from "../../../data/equipments"
 import { useCharacterStore } from "../store/characterStore";
 import { POTIONS, type PotionId } from "../../../data/potions";
 
@@ -35,9 +35,11 @@ function InventoryItem({ itemId }: InventoryItemProps) {
         )
     }
 
-    const item = EQUIPMENTS.weapon[itemId as WeaponId]
-        ?? EQUIPMENTS.armor[itemId as ArmorId]
-        ?? POTIONS[itemId as PotionId];
+    const item = EQUIPMENTS.weapon[itemId as WeaponId] as Equipment
+        ?? EQUIPMENTS.armor[itemId as ArmorId] as Equipment
+        ?? null
+
+    const potion = POTIONS[itemId as PotionId] ?? null;
 
     if (!item) return null;
 
@@ -106,15 +108,15 @@ function InventoryItem({ itemId }: InventoryItemProps) {
                     }
 
                     {/* 포션일때 회복량 표시 */}
-                    {`hpRestore` in item && item.hpRestore > 0
+                    {potion && potion.hpRestore > 0
                         ? (<span className="text-red-400">
-                            ❤️ HP +{item.hpRestore}
+                            ❤️ HP +{potion.hpRestore}
                         </span>)
                         : null
                     }
-                    {'mpRestore' in item && item.mpRestore > 0
+                    {potion && potion.mpRestore > 0
                         ? (<span className="text-blue-400">
-                            💧 MP +{item.mpRestore}
+                            💧 MP +{potion.mpRestore}
                         </span>)
                         : null
                     }

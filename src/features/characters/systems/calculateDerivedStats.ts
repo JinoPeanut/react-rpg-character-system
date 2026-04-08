@@ -1,6 +1,6 @@
 import { BASE_CRIT_DAMAGE, JOBS } from "../../../data/jobs";
 import { EQUIPMENTS } from "../../../data/equipments";
-import type { WeaponId, ArmorId } from "../../../data/equipments";
+import type { WeaponId, ArmorId, Equipment } from "../../../data/equipments";
 import type { JobType } from "../../../data/jobs";
 import type { Stats } from "../../../types/stats";
 
@@ -30,15 +30,15 @@ export function calculateDerivedStats(
     const jobData = JOBS[job]!;
 
     const weapon = equippedItems.weapon
-        ? EQUIPMENTS.weapon[equippedItems.weapon]
+        ? EQUIPMENTS.weapon[equippedItems.weapon] as Equipment
         : undefined
 
     const armorTop = equippedItems.armorTop
-        ? EQUIPMENTS.armor[equippedItems.armorTop]
+        ? EQUIPMENTS.armor[equippedItems.armorTop] as Equipment
         : undefined
 
     const armorBottom = equippedItems.armorBottom
-        ? EQUIPMENTS.armor[equippedItems.armorBottom]
+        ? EQUIPMENTS.armor[equippedItems.armorBottom] as Equipment
         : undefined
 
     const attack = jobData.attackFormula(stats) + (weapon?.attack ?? 0);

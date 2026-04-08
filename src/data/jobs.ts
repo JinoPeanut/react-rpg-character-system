@@ -1,28 +1,32 @@
 import type { Stats } from "../types/stats";
 
-export type Job = {
-    name: string,
-    requireLevel?: number,
-    requirement?: Partial<Stats>,
-    baseHp: number,
-    baseMp: number,
-    hpPerLevel: number,
-    mpPerLevel: number,
-    baseCritChance: number,
-    mainStat?: "Str" | "Dex" | "Int" | "Luk",
-    attackType: "attack" | "magic",
-    hpFormula: (level: number, job: Job, stats: Stats) => number,
-    mpFormula: (level: number, job: Job, stats: Stats) => number,
-    attackFormula: (stat: Stats) => number,
-    magicFormula: (stat: Stats) => number,
-    defenseFormula: (stat: Stats) => number,
-    description: string,
-}
-
 export type JobType = "adventure" | "warrior" | "archer" | "mage" | "thief";
 
-/* 기본 크리티컬 데미지 2배 */
+export type Job = {
+    name: string, // 이름
+    requireLevel?: number, // 직업의 전직레벨
+    requirement?: Partial<Stats>, // 최소 필요스탯
+    baseHp: number, // 기본 체력
+    baseMp: number, // 기본 마나
+    hpPerLevel: number, // 레벨당 체력증가
+    mpPerLevel: number, // 레벨당 마나증가
+    baseCritChance: number, // 기본 크리티컬 확률
+    mainStat?: "Str" | "Dex" | "Int" | "Luk", // 각 직업의 메인스탯
+    attackType: "attack" | "magic", // 각 직업의 공격타입
+    // hp 증가 계산식
+    hpFormula: (level: number, job: Job, stats: Stats) => number,
+    // mp 증가 계산식
+    mpFormula: (level: number, job: Job, stats: Stats) => number,
+    // 공격력 계산식
+    attackFormula: (stat: Stats) => number,
+    // 마력 계산식
+    magicFormula: (stat: Stats) => number,
+    // 방어력 계산식
+    defenseFormula: (stat: Stats) => number,
+    description: string, // 직업 설명추가
+}
 
+/* 기본 크리티컬 데미지 2배 */
 export const BASE_CRIT_DAMAGE = 2;
 
 export const JOBS: Record<JobType, Job> = {
@@ -36,6 +40,7 @@ export const JOBS: Record<JobType, Job> = {
         baseCritChance: 0.1,
         attackType: "attack",
 
+        // 모험가는 체력에 stat이 필요없지만 hpFormula 호출시 타입의 일관성을 위해 stats 추가
         hpFormula: (level: number, job: Job, stats: Stats) => job.baseHp + ((level - 1) * job.hpPerLevel),
 
         mpFormula: (level: number, job: Job, stats: Stats) => job.baseMp + ((level - 1) * job.mpPerLevel),

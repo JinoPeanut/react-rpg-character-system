@@ -1,4 +1,4 @@
-import { EQUIPMENTS } from "../../../data/equipments";
+import { EQUIPMENTS, type Equipment } from "../../../data/equipments";
 import { useCharacterStore } from "../store/characterStore"
 
 const SLOT_CONFIG = {
@@ -28,10 +28,12 @@ export default function EquippedItems() {
 
     const getItem = (slot: SlotKey) => {
         if (slot === "weapon") {
-            return equipped.weapon ? EQUIPMENTS.weapon[equipped.weapon] : null;
+            return equipped.weapon
+                ? EQUIPMENTS.weapon[equipped.weapon] as Equipment
+                : null;
         }
         const armorId = equipped[slot];
-        return armorId ? EQUIPMENTS.armor[armorId] : null;
+        return armorId ? EQUIPMENTS.armor[armorId] as Equipment : null;
     }
 
     return (

@@ -1,21 +1,20 @@
 import type { JobType } from "./jobs";
 
+type Test = WeaponId;
+
 export type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
-type Equipment = {
-    name: string,
-    attack?: number,
-    magic?: number,
-    defense?: number,
-    hp?: number,
-    allowedJobs?: readonly JobType[],
-    slot: EquipmentSlot,
+export type Equipment = {
+    readonly name: string, // 장비 이름
+    readonly attack?: number, // 공격력 증가량
+    readonly magic?: number, // 마력 증가량
+    readonly defense?: number, // 방어력 증가량
+    readonly hp?: number, // 체력 증가량
+    readonly allowedJobs?: readonly JobType[], // 장착가능 직업
+    readonly slot: EquipmentSlot, // 장착 슬롯 칸
 }
 
-export const EQUIPMENTS: {
-    weapon: Record<string, Equipment>,
-    armor: Record<string, Equipment>,
-} = {
+export const EQUIPMENTS = {
     weapon: {
         woodenSword: {
             name: "나무 검",
@@ -61,7 +60,13 @@ export const EQUIPMENTS: {
             slot: "armorBottom",
         }
     }
-} as const
+    // as const 는 읽기전용 => 일관성을 위해 타입에 readonly 추가
+    // satisfies 로 인해 타입정확성이 올라서 대부분 weapon armor 호출하는 부분에
+    // as Equipment 로 타입을 확정해줘야함
+} as const satisfies {
+    weapon: Record<string, Equipment>,
+    armor: Record<string, Equipment>
+}
 
 export type WeaponId = keyof typeof EQUIPMENTS.weapon;
 export type ArmorId = keyof typeof EQUIPMENTS.armor;

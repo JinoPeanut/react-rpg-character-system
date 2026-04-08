@@ -6,7 +6,7 @@ import { canChangeJob } from "../utils/canChangeJob";
 
 import type { Stats } from "../../../types/stats";
 import type { JobType } from "../../../data/jobs";
-import type { WeaponId, ArmorId } from "../../../data/equipments";
+import type { WeaponId, ArmorId, Equipment } from "../../../data/equipments";
 import { calculateDerivedStats } from "../systems/calculateDerivedStats";
 import { SKILLS } from "../../../data/skills";
 import { POTIONS, type PotionId } from "../../../data/potions";
@@ -309,7 +309,7 @@ export const useCharacterStore = create<CharacterState>()(
             })),
 
             equipFromInventory: (itemId) => set((state) => {
-                state.equipItem(itemId);
+                state.equipItem(itemId as WeaponId | ArmorId);
 
                 return {
                     inventory: state.inventory.filter((id) => id !== itemId),
@@ -329,14 +329,14 @@ export const useCharacterStore = create<CharacterState>()(
                 let item;
 
                 if (itemId in EQUIPMENTS.weapon) {
-                    item = EQUIPMENTS.weapon[itemId as WeaponId];
+                    item = EQUIPMENTS.weapon[itemId as WeaponId] as Equipment;
                 } else {
-                    item = EQUIPMENTS.armor[itemId as ArmorId];
+                    item = EQUIPMENTS.armor[itemId as ArmorId] as Equipment;
                 }
 
                 if (!item) return;
 
-                if (item.allowedJobs && !item.allowedJobs.includes(job)) {
+                if (item.allowedJobs && !item.allowedJobs.includes(job as any)) {
                     console.log("이 직업은 장착할 수 없습니다");
                     return;
                 }

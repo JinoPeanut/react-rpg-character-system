@@ -35,11 +35,21 @@ function InventoryItem({ itemId }: InventoryItemProps) {
         )
     }
 
-    const item = EQUIPMENTS.weapon[itemId as WeaponId] as Equipment
-        ?? EQUIPMENTS.armor[itemId as ArmorId] as Equipment
-        ?? null
+    const isWeapon = itemId in EQUIPMENTS.weapon;
+    const isArmor = itemId in EQUIPMENTS.armor;
+    const isPotion = itemId in POTIONS;
 
-    const potion = POTIONS[itemId as PotionId] ?? null;
+    const equipment = isWeapon
+        ? EQUIPMENTS.weapon[itemId as WeaponId] as Equipment
+        : isArmor
+            ? EQUIPMENTS.armor[itemId as ArmorId] as Equipment
+            : null;
+
+    const potion = isPotion
+        ? POTIONS[itemId as PotionId]
+        : null;
+
+    const item = equipment ?? potion;
 
     if (!item) return null;
 

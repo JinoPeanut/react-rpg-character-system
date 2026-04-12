@@ -18,8 +18,10 @@ function DerivedStatsPanel() {
     } = calculateDerivedStats(level, job, stats, equippedItems);
 
     return (
+        // %는 소숫점없이 표시, 그 외에는 소숫점 2자리까지
         <div className="rounded-md bg-gray-800/50 p-2 grid grid-cols-[150px_80px] gap-y-1">
             <span>공격력:</span>
+
             <span>{attack.toFixed(2)}</span>
 
             <span>마력:</span>

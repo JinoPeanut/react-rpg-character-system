@@ -21,6 +21,7 @@ function getItemIcon(itemId: string): string {
 
 export function ShopPanel() {
 
+    // tab 은 buy 와 sell 둘중 하나고 기본값은 buy
     const [tab, setTab] = useState<ShopTab>("buy");
 
     const gold = useCharacterStore((state) => state.gold);
@@ -144,6 +145,7 @@ export function ShopPanel() {
 
                             return (
                                 <div
+                                    // 같은 아이템이 있을 수 있어서 index 사용
                                     key={index}
                                     className="
                                         bg-gray-800 border border-gray-700

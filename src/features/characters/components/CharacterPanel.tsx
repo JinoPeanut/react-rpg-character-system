@@ -2,8 +2,6 @@ import DerivedStatsPanel from "./DerivedStatsPanel"
 import LevelPanel from "./LevelPanel"
 import StatPanel from "./StatPanel"
 
-
-
 export function CharacterPanel() {
 
     return (

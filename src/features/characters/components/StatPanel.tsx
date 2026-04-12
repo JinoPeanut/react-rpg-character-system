@@ -12,6 +12,7 @@ function StatPanel() {
         <div className="bg-gray-800/50 p-3 rounded-md text-gray-200">
             <p>남은 포인트: {remainingPoints}</p>
 
+            {/* 스탯과 스탯 포인트를 표시하기 위해 Object.entries 사용 */}
             {Object.entries(stats).map(([stat, value]) => {
                 const key = stat as keyof typeof stats;
 
@@ -25,11 +26,11 @@ function StatPanel() {
                                 onClick={() => increaseStat(key)}
                                 disabled={remainingPoints <= 0}
                                 className="
-                            rounded border bg-gray-600
-                            shadow-[0_4px_10px_rgba(0,0,0,0.5)] w-5 h-5 flex
-                            hover:shadow-lg transition 
-                            items-center justify-center 
-                            leading-none"
+                                    rounded border bg-gray-600
+                                    shadow-[0_4px_10px_rgba(0,0,0,0.5)] w-5 h-5 flex
+                                    hover:shadow-lg transition 
+                                    items-center justify-center 
+                                    leading-none"
                             >
                                 +
                             </button>
@@ -37,11 +38,11 @@ function StatPanel() {
                                 onClick={() => decreaseStat(key)}
                                 disabled={value <= baseStats[key]}
                                 className="
-                            rounded border bg-gray-600
-                            shadow-[0_4px_10px_rgba(0,0,0,0.5)] w-5 h-5 flex
-                            hover:shadow-lg transition
-                            items-center justify-center 
-                            leading-none"
+                                    rounded border bg-gray-600
+                                    shadow-[0_4px_10px_rgba(0,0,0,0.5)] w-5 h-5 flex
+                                    hover:shadow-lg transition
+                                    items-center justify-center 
+                                    leading-none"
                             >
                                 -
                             </button>

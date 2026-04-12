@@ -21,6 +21,8 @@ const JOB_NAMES: Record<string, string> = {
     thief: "도적",
 }
 
+// props: InventoryItemProps 보다 이렇게 하는게 아래 코드에서 접근하기 편함
+// itemId 로 호출하느냐 또는 props.itemId 로 호출하느냐 차이
 function InventoryItem({ itemId }: InventoryItemProps) {
 
     const equipFromInventory = useCharacterStore((s) => s.equipFromInventory);
@@ -49,6 +51,8 @@ function InventoryItem({ itemId }: InventoryItemProps) {
         ? POTIONS[itemId as PotionId]
         : null;
 
+    // 둘다 있는 속성이면 item.name 으로 접근가능
+    // 둘중에 하나라도 없으면 'attack' in item 으로 조건걸기
     const item = equipment ?? potion;
 
     if (!item) return null;
@@ -96,8 +100,19 @@ function InventoryItem({ itemId }: InventoryItemProps) {
                     </span>
                 </div>
 
-                {/* 스탯 수치 */}
+                {/* 스탯 수치 and 직업 제한 */}
                 <div className="flex flex-col gap-1 text-xs">
+                    {/* 직업 제한 */}
+                    {equipment?.allowedJobs && (
+                        <div className="text-purple-400 text-xs">
+                            {equipment.allowedJobs
+                                .map(job => JOB_NAMES[job] ?? job)
+                                .join(", ")
+                            } 전용
+                        </div>
+                    )}
+
+                    {/* 스탯 수치 */}
                     {'attack' in item && item.attack
                         ? (<span className="text-red-400">
                             ⚔️ 공격력 +{item.attack}

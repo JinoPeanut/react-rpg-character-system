@@ -85,6 +85,8 @@ const DEFAULT_STATS: Stats = {
     Luk: 8,
 }
 
+// calculate 안에 있는 계산값을 모두 가져옴
+// (사실상 hp mp 값 계산하기 위해서 기본값을 넣어둠)
 const initialDerived = calculateDerivedStats(
     1,
     defaultJob,
@@ -92,6 +94,7 @@ const initialDerived = calculateDerivedStats(
     { weapon: null, armorTop: null, armorBottom: null },
 );
 
+// 10의 배수 레벨당 필요 경험치량 증가.
 export const getRequiredExp = (level: number): number => {
     if (level < 10) {
         return level * 10;
@@ -229,8 +232,8 @@ export const useCharacterStore = create<CharacterState>()(
 
             hp: initialDerived.hp,
             mp: initialDerived.mp,
-
             exp: 0,
+
             checkLevelUp: () => {
                 const state = get();
                 const required = getRequiredExp(state.level);

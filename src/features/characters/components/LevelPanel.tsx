@@ -2,11 +2,15 @@ import { JOBS } from "../../../data/jobs";
 import { useCharacterStore, getRequiredExp } from "../store/characterStore";
 
 function LevelPanel() {
+    // 레벨, 현재 직업, 현재 경험치 (필요)
     const level = useCharacterStore((state) => state.level);
     const job = useCharacterStore((state) => state.job);
-    const exp = useCharacterStore((state) => state.exp);  // 추가
+    const exp = useCharacterStore((state) => state.exp);
 
+    // 레벨 10마다 필요경험치 증가
     const requiredExp = getRequiredExp(level);
+
+    // 현재 경험치량 (width %)
     const expPercent = Math.min(100, (exp / requiredExp) * 100);
 
     return (

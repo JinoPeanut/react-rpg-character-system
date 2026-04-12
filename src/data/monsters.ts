@@ -4,15 +4,15 @@ export type Drop = {
 }
 
 export type Monster = {
-    id: string,
-    name: string,
-    level: number,
-    hp: number,
-    attack: number,
-    defense: number,
-    exp: number,
+    id: string, // 몬스터 아이디
+    name: string, // 몬스터 이름
+    level: number, // 몬스터 레벨
+    hp: number, // 몬스터 체력
+    attack: number, // 몬스터 공격력
+    defense: number, // 몬스터 방어력
+    exp: number, // 몬스터가 주는 경험치
     drops: Drop[],  // 여러 개 드롭 가능하도록 배열로
-    goldDrop: number,
+    goldDrop: number, // 몬스터가 주는 골드
 }
 
 export type MonsterId = keyof typeof MONSTERS;

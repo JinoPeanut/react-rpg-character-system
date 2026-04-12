@@ -1,5 +1,4 @@
 import { useCharacterStore } from "../store/characterStore"
-import { EQUIPMENTS } from "../../../data/equipments"
 import InventoryItem from "./InventoryItem";
 
 const INVENTORY_SIZE = 20;
@@ -8,9 +7,10 @@ function InventoryPanel() {
 
     const inventory = useCharacterStore((state) => state.inventory);
 
+    // 20개의 배열을 만들면서 동시에 inventory[i] 에 있는 아이템 또는 null 을 채워넣음.
     const slots: (string | null)[] = Array.from({ length: INVENTORY_SIZE }, (_, i) =>
         inventory[i] ?? null
-    )
+    );
 
     return (
         <div>

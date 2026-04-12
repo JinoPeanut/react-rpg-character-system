@@ -1,7 +1,5 @@
 import type { JobType } from "./jobs";
 
-type Test = WeaponId;
-
 export type EquipmentSlot = "weapon" | "armorTop" | "armorBottom";
 
 export type Equipment = {
